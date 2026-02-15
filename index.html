@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GEARSHARE — Comparte material deportivo</title>
+  <meta name="description" content="GEARSHARE: pide y presta material deportivo cerca de ti. Ahorra dinero y espacio para usos puntuales." />
+
+  <style>
+    :root{
+      --bg: #dbeafe;       /* azul pastel */
+      --card: rgba(255,255,255,.75);
+      --text: #0f172a;
+      --muted: rgba(15,23,42,.72);
+      --border: rgba(15,23,42,.12);
+      --shadow: 0 10px 30px rgba(2,6,23,.10);
+      --radius: 18px;
+    }
+    *{ box-sizing: border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, var(--bg), #ffffff);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 22px;
+    }
+    .wrap{ width: min(1040px, 100%); }
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      backdrop-filter: blur(6px);
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1.15fr 1fr;
+      align-items:center;
+      gap: 0;
+    }
+    .content{ padding: 28px; }
+    h1{
+      margin:0;
+      font-size: clamp(28px, 3vw, 38px);
+      letter-spacing: .6px;
+      font-weight: 900;
+    }
+    .tagline{
+      margin: 10px 0 0;
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .bullets{
+      margin: 16px 0 0;
+      padding-left: 18px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+    .ctaRow{
+      margin-top: 18px;
+      display:flex;
+      gap: 12px;
+      align-items:center;
+      flex-wrap: wrap;
+    }
+    .btn{
+      display:inline-block;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(2,6,23,.18);
+      background: #0ea5e9;
+      color: white;
+      text-decoration:none;
+      font-weight: 800;
+      letter-spacing: .2px;
+      box-shadow: 0 8px 18px rgba(14,165,233,.25);
+    }
+    .btn:hover{ filter: brightness(0.98); }
+    .small{
+      font-size: 13px;
+      color: var(--muted);
+    }
+    figure{ margin:0; padding: 18px; }
+    img{
+      width:100%;
+      height:auto;
+      display:block;
+      border-radius: 14px;
+    }
+    .footer{
+      padding: 14px 18px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+      text-align:center;
+    }
+    @media (max-width: 820px){
+      .grid{ grid-template-columns: 1fr; }
+      figure{ padding-top: 0; }
+      .content{ padding: 22px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <section class="card" aria-label="GEARSHARE">
+      <div class="grid">
+        <div class="content">
+          <h1>GEARSHARE</h1>
+          <p class="tagline">
+            Pide y presta material deportivo cerca de ti, de forma rápida y segura.
+            Ideal para usos puntuales sin comprar ni alquilar.
+          </p>
+
+          <ul class="bullets">
+            <li>Ahorra dinero y espacio</li>
+            <li>Disponibilidad por fechas</li>
+            <li>Perfiles y valoraciones</li>
+            <li>Depósito/seguro (según el material)</li>
+          </ul>
+
+          <div class="ctaRow">
+            <a class="btn" href="TU_LINK_ENCUESTA" target="_blank" rel="noopener">
+              Ir a la encuesta (2–3 min)
+            </a>
+            <span class="small">Tu respuesta nos ayuda a validar la idea.</span>
+          </div>
+        </div>
+
+        <figure>
+          <img
+            src="https://grillosport.es/wp-content/uploads/2022/11/Alquiler-material-y-equipamiento-deportivo-Grillo-sport.jpg"
+            alt="Material deportivo"
+            loading="lazy"
+          />
+        </figure>
+      </div>
+
+      <div class="footer">
+        Proyecto académico · Smoke Test (QR → landing → encuesta)
+      </div>
+    </section>
+  </main>
+</body>
+</html>
