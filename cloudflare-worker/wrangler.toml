@@ -4,7 +4,7 @@ compatibility_date = "2024-01-01"
 
 # Variables de entorno (Rellenar con valores reales)
 [vars]
-CORS_ORIGIN = "https://tu-usuario.github.io"  # Cambiar por tu URL de GitHub Pages
+CORS_ORIGIN = "https://jjmb10-ua.github.io"  # Cambiar por tu URL de GitHub Pages
 JWT_SECRET = "tu-secreto-jwt-muy-seguro"      # Cambiar por un secreto seguro
 
 # Configuración de Turso (Rellenar con credenciales reales)
@@ -21,3 +21,19 @@ name = "TURSO_AUTH_TOKEN"
 binding = "IMAGES_BUCKET"
 bucket_name = "alquiler-imagenes"
 preview_bucket_name = "alquiler-imagenes-preview"
+
+
+[observability]
+enabled = false
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
+
+[observability.traces]
+enabled = false
+persist = true
+head_sampling_rate = 1

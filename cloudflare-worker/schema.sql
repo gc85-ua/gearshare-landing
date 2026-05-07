@@ -1,38 +1,49 @@
 -- Esquema de base de datos para Turso (SQLite)
--- GearShare - Plataforma de préstamo de material deportivo
--- Ejecutar este script al crear la base de datos
+-- GearShare - Plataforma de alquiler de material deportivo
 
-CREATE TABLE IF NOT EXISTS solicitudes (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    tipo TEXT NOT NULL CHECK(tipo IN ('tengo', 'busco')),
-    deporte TEXT NOT NULL,
-    material TEXT NOT NULL,
-    descripcion TEXT,
-    precio REAL NOT NULL,
-    ubicacion TEXT NOT NULL,
-    fecha_inicio DATE NOT NULL,
-    fecha_fin DATE NOT NULL,
-    nombre_contacto TEXT NOT NULL,
-    email_contacto TEXT NOT NULL,
-    estado TEXT DEFAULT 'activo' CHECK(estado IN ('activo', 'completado', 'cancelado')),
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+-- 1. Tabla de categorías con tarifas de seguro
+CREATE TABLE IF NOT EXISTS categories_insurance (
+    category_id TEXT PRIMARY KEY,
+    insurance_fee REAL NOT NULL DEFAULT 4.50 -- 💰 Tarifa fija de seguro por categoría
 );
 
--- Índices para mejorar el rendimiento
-CREATE INDEX IF NOT EXISTS idx_solicitudes_tipo ON solicitudes(tipo);
-CREATE INDEX IF NOT EXISTS idx_solicitudes_deporte ON solicitudes(deporte);
-CREATE INDEX IF NOT EXISTS idx_solicitudes_estado ON solicitudes(estado);
-CREATE INDEX IF NOT EXISTS idx_solicitudes_created_at ON solicitudes(created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_solicitudes_fecha_inicio ON solicitudes(fecha_inicio);
-CREATE INDEX IF NOT EXISTS idx_solicitudes_ubicacion ON solicitudes(ubicacion);
+-- Insertar datos iniciales (usamos INSERT OR IGNORE para no fallar si ya existen)
+INSERT OR IGNORE INTO categories_insurance (category_id, insurance_fee) VALUES
+    ('surf', 4.50),
+    ('esquí', 3.00),
+    ('snowboard', 3.00),
+    ('ciclismo', 3.00),
+    ('montañismo', 1.50),
+    ('escalada', 1.50),
+    ('kayak', 4.50);
 
--- Tabla opcional para tracking de imágenes (si se añade en el futuro)
-CREATE TABLE IF NOT EXISTS image_uploads (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    filename TEXT NOT NULL UNIQUE,
-    url TEXT NOT NULL,
-    solicitud_id INTEGER,
-    uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (solicitud_id) REFERENCES solicitudes(id) ON DELETE SET NULL
+-- 2. Tabla de ofertas de alquiler
+CREATE TABLE IF NOT EXISTS offers (
+    id TEXT PRIMARY KEY,
+    sport_type TEXT NOT NULL,
+    material_name TEXT NOT NULL,
+    description TEXT,
+    location TEXT NOT NULL,
+    price_per_alquiler REAL NOT NULL, -- ⚠️ PRECIO BASE DEL OFERENTE (sin comisiones ni seguros)
+    available_from TEXT NOT NULL,
+    available_to TEXT NOT NULL,
+    contact_name TEXT NOT NULL,
+    contact_email TEXT NOT NULL,
+    image_url TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+-- 3. Índices para rendimiento
+-- Índices simples para filtros directos
+CREATE INDEX IF NOT EXISTS idx_offers_sport ON offers(sport_type);
+CREATE INDEX IF NOT EXISTS idx_offers_location ON offers(location);
+CREATE INDEX IF NOT EXISTS idx_offers_price ON offers(price_per_alquiler);
+
+-- Índice compuesto para búsqueda de fechas (muy útil para la lógica de disponibilidad)
+-- Ayuda a filtrar rápidamente rangos de fechas
+CREATE INDEX IF NOT EXISTS idx_offers_dates ON offers(available_from, available_to);
+
+-- Índice para búsqueda de texto en nombre de material (LIKE '%...%')
+-- Nota: LIKE con comodín al inicio (%) no usa índices eficientemente en SQLite estándar,
+-- pero este índice ayuda si buscas por prefijo o si el optimizador decide usarlo para ordenar.
+CREATE INDEX IF NOT EXISTS idx_offers_material ON offers(material_name);
